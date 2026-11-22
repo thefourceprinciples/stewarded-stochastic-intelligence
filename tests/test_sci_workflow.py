@@ -58,7 +58,7 @@ def test_quarantine_branch_isolation_and_merge():
         statement="Effective cavity vacuum resonance exhibits apparent local energy surplus.",
         metadata={
             "violates_energy_conservation": True,
-            "lhs": "E_out - E_in",
+            "lhs": "(E_in + delta_vac) - E_in",
             "rhs": "delta_vac",
         },
     )
