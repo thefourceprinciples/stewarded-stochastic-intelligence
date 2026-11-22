@@ -1,21 +1,21 @@
 # Stewarded Stochastic Intelligence (`SSI`)
 
-An applied epistemic governance architecture for probabilistic AI systems. 
+An applied epistemic governance engine for probabilistic AI systems.
 
 Rather than treating large language models as unverified oracles, `SSI` separates **stochastic proposal generation** from **claim acceptance**—converting raw AI outputs into recoverable, auditable knowledge.
 
 ---
 
-## Core Architecture
+## Core Architecture: `SSI = (G, M, R, K, V, L, A, H)`
 
-`SSI` structures cognitive workflows into eight distinct layers: `SSI = (G, M, R, K, V, L, A, H)`
+`SSI` structures cognitive workflows into eight distinct layers:
 
 * **`G` — Stochastic Generator:** Proposes candidate claims, hypotheses, and search terms without modifying accepted memory.
 * **`M` — Memory & State:** Tracks stable definitions and isolated anomaly branches separately from raw conversation history.
 * **`R` — Retrieval:** Fetches external context while enforcing provenance and primary-vs-secondary source tracking.
 * **`K` — Constraint Registry:** Enforces domain axioms, logical consistency, and safety boundaries.
-* **`V` — Validators:** Verifies claims using deterministic checks (symbolic math, code execution, simulations).
-* **`L` — Claim Ledger:** An append-only Directed Acyclic Graph (DAG) tracking claim custody states and dependency rollbacks.
+* **`V` — Validators:** Verifies claims using deterministic checks (symbolic math, schema checks, threshold rules, telemetry alignment).
+* **`L` — Claim Ledger:** An append-only Directed Acyclic Graph (DAG) tracking claim custody states, JSON persistence, and dependency rollbacks.
 * **`A` — Action Gate:** Evaluates risk and evidence maturity before clearing real-world execution.
 * **`H` — Human Governance:** Maintains human accountability for defining constraints and approving paradigm merges.
 
@@ -39,13 +39,46 @@ Every proposition moves through explicit custody states rather than binary true/
 ## Key Safety & Resilience Mechanics
 
 * **Blast-Radius Dependency Rollbacks:** If a foundational source or premise is retracted, the Claim Ledger (`L`) traverses the dependency DAG and automatically demotes downstream `Q2–Q5` claims to `Q1_TAINTED`, freezing any dependent actions.
-* **Quarantine Branching:** Coherent hypotheses that violate current domain constraints (`K`) but correlate with unexplained empirical anomalies are routed to isolated `quarantine/*` branches—preventing dogmatic lock-in without polluting core memory.
+* **Quarantine Branching:** Coherent hypotheses that violate current domain constraints (`K`) or source-chain policies—but correlate with unexplained empirical anomalies or high-signal leads—are routed to isolated `quarantine/*` branches, preventing dogmatic lock-in or unverified leaks without polluting core memory.
+* **Auditable JSON Persistence:** Full DAG state, dependency edges, and event histories serialize cleanly to disk via `save_ledger()` and `load_ledger()`.
 
 ---
 
-## Repository Roadmap
+## Domain Adapters (`adapters/`)
 
-* [x] **v0.0:** Repository initialization & architectural specification
-* [ ] **v0.1:** `ssi_core` (DAG Claim Ledger, custody state machine, rollback, & quarantine) + `sci_workbench` adapter
-* [ ] **v0.2:** Persistent ledger storage (SQLite / JSON graph export)
-* [ ] **v0.3:** Live external retrieval connectors (arXiv API) & numerical simulation validators
+All four domain packs share the exact same `ssi_core` engine while customizing Constraints (`K`), Retrieval (`R`), and Validators (`V`):
+
+| Adapter | Path | Purpose |
+| :--- | :--- | :--- |
+| **Scientific R&D Workbench** | `adapters/sci_workbench/` | Symbolic algebra verification (`SymPy`), conservation-law constraints, and live **arXiv API** evidence linking. |
+| **Self-Healing Knowledge Base** | `adapters/self_healing_kb/` | Tracks ownership and schema versions across docs/API specs; automatically taints downstream bot macros on deprecation. |
+| **Regulatory & Compliance Audit** | `adapters/compliance_audit/` | Binds claims to statutory/jurisdictional standards and enforces numeric compliance thresholds with instant recall cascades. |
+| **OSINT Verification Suite** | `adapters/osint_verify/` | Quarantines single-source anonymous leaks, verifies multi-signal telemetry alignment, and contains spoofed-source cascades. |
+
+---
+
+## Quickstart
+
+### 1. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the Interactive Scientific Workbench Demo
+```bash
+python demo_sci.py
+```
+
+### 3. Run the Full Epistemic Invariant Test Suite
+```bash
+python -m pytest -v
+```
+
+---
+
+## Repository Milestones
+
+* [x] **v0.1:** `ssi_core` (DAG Claim Ledger, `Q0–Q5` state machine, blast-radius rollback, quarantine branching) & `sci_workbench`
+* [x] **v0.2:** Auditable JSON ledger persistence (`ssi_core/storage.py`)
+* [x] **v0.3:** Live external retrieval connector (`arXiv` API)
+* [x] **v0.4:** Cross-domain adapters (`self_healing_kb`, `compliance_audit`, `osint_verify`) & automated CI test suite
