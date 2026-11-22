@@ -8,7 +8,7 @@ from adapters.sci_workbench.validators import ConservationOfEnergyConstraint
 SAMPLE_ARXIV_XML = b"""<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://w3.org">
   <entry>
-    <id>http://arxiv.org</id>
+    <id>arxiv:2401.12345v1</id>
     <published>2024-01-22T18:00:00Z</published>
     <title>Cavity Quantum Electrodynamics and Vacuum Fluctuations</title>
     <author><name>A. Researcher</name></author>
@@ -34,5 +34,7 @@ def test_arxiv_retriever_promotes_q1_to_q2():
         link_arxiv_evidence(ledger, "C-50", query="Casimir cavity mode density", max_results=1)
 
     assert claim.custody_state == CustodyState.Q2_SOURCE_LINKED
-    assert "2401.12345v1" in claim.sources[0]
-    assert claim.metadata["retrieved_papers"][0]["authors"] == "A. Researcher"
+    first_source = next(iter(claim.sources))
+    first_paper = next(iter(claim.metadata["retrieved_papers"]))
+    assert "2401.12345v1" in first_source
+    assert first_paper["authors"] == "A. Researcher"
